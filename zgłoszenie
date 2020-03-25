@@ -1,0 +1,73 @@
+#include<iostream>
+#include<cstring>
+#include<map>
+
+using namespace std;
+
+int zamienRzymskieNaArabskie(string liczbaRzymska)
+{
+    int i, liczbaArabska = 0,aktualnyZnak = 0, ostatnia = 0;
+
+    map<char, int>wartoscRzymska;
+    wartoscRzymska['I']=1;
+    wartoscRzymska['V']=5;
+    wartoscRzymska['X']=10;
+    wartoscRzymska['L']=50;
+    wartoscRzymska['C']=100;
+    wartoscRzymska['D']=500;
+    wartoscRzymska['M']=1000;
+
+    i = liczbaRzymska.length();
+
+    while(i--)
+    {
+       aktualnyZnak = wartoscRzymska[liczbaRzymska[i]];
+       if(aktualnyZnak>=ostatnia)
+       {
+           ostatnia = aktualnyZnak;
+           liczbaArabska +=aktualnyZnak;
+       }
+       else liczbaArabska -= aktualnyZnak;
+    }
+    return liczbaArabska;
+}
+
+string zamienArabskieNaRzymskie( int liczbaArabska)
+{
+    char rzymskiePodstawowe[] = {'M', 'D', 'C', 'L', 'X', 'V', 'I'};
+    char * rzymskieDlaCzworekiDziewiatek[] = {"CM", "CD", "XC", "XL", "IX", "IV", "I"};
+    int liczbyArabskie[] = {1000, 500, 100, 50, 10, 5, 1};
+    int liczbyArabskieCzworkiiDziewiatki[] = {900, 400, 90, 40, 9, 4, 1};
+        string wynik = "";
+        int j = 0;
+        while (liczbaArabska > 0)
+        {
+            if (liczbaArabska >= liczbyArabskie[j])
+            {
+                liczbaArabska -= liczbyArabskie[j];
+                wynik += rzymskiePodstawowe[j];
+            }
+            else if (liczbaArabska >= liczbyArabskieCzworkiiDziewiatki[j])
+            {
+                liczbaArabska -= liczbyArabskieCzworkiiDziewiatki[j];
+                wynik += rzymskieDlaCzworekiDziewiatek[j];
+            }
+            else
+                j++;
+        }
+        return wynik;
+    }
+
+int main()
+{
+    string liczba;
+    string liczba2;
+
+    while(cin>>liczba)
+    {
+        cin>>liczba2;
+        long int sumaDodawaniaWpostaciArabskiej =
+        zamienRzymskieNaArabskie(liczba)+zamienRzymskieNaArabskie(liczba2);
+        cout<<zamienArabskieNaRzymskie(sumaDodawaniaWpostaciArabskiej)<<endl;
+    }
+}
